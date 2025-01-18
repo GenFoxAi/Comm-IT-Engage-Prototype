@@ -2,15 +2,15 @@ import { useState, useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import { CgAttachment } from 'react-icons/cg';
 import userImage from '../assets/profile-test.jpg';
-import botImage from '../assets/bot.png';
+import botImage from '../assets/logo-5.png';
 import Typewriter from '../components/Typewriter';
 import SupportModel from '../components/model/SupportModel';
 import { AiOutlineDislike, AiOutlineLike } from 'react-icons/ai';
 import { BiCopyAlt } from 'react-icons/bi';
 import { TbReload } from 'react-icons/tb';
 import { GrCircleQuestion } from 'react-icons/gr';
-import SlideInNotifications from '../components/SlideInNotifications'; 
-import { v4 as uuidv4 } from 'uuid'; 
+import SlideInNotifications from '../components/SlideInNotifications';
+import { v4 as uuidv4 } from 'uuid';
 import { MdOutlineSupportAgent } from 'react-icons/md';
 
 const Chat = () => {
@@ -135,97 +135,121 @@ const Chat = () => {
   };
 
   return (
-    <div className='flex flex-col flex-grow bg-black text-white relative px-4 md:px-[20%] transition-all duration-300'>
-      {/* Modal Component */}
-      <SupportModel
-        isOpen={isModalOpen}
-        setIsOpen={setIsModalOpen}
-        userQuestion={selectedMessage.userQuestion}
-        botReply={selectedMessage.botReply}
-      />
+    <>
+      {/* Outer wrapper - no overflow-x-hidden needed here */}
+      <div
+        className='
+          flex flex-col flex-grow 
+          bg-black text-white relative 
+          px-4 md:px-[20%] 
+          transition-all duration-300
+        '
+      >
+        {/* Modal Component */}
+        <SupportModel
+          isOpen={isModalOpen}
+          setIsOpen={setIsModalOpen}
+          userQuestion={selectedMessage.userQuestion}
+          botReply={selectedMessage.botReply}
+        />
 
-      {/* Notifications */}
-      <SlideInNotifications
-        notifications={notifications}
-        removeNotif={removeNotif}
-      />
+        {/* Notifications */}
+        <SlideInNotifications
+          notifications={notifications}
+          removeNotif={removeNotif}
+        />
 
-      {/* Chat Messages */}
-      <div className='flex-grow overflow-y-auto px-6 py-4 pb-24'>
-        {messages.map((msg, idx) => (
-          <div
-            key={idx}
-            className={`flex my-2 ${
-              msg.role === 'user' ? 'justify-end' : 'justify-start'
-            }`}
-          >
-            {/* User Message */}
-            {msg.role === 'user' && (
-              <div className='max-w-full sm:max-w-md rounded-xl p-3 bg-[#202327]'>
-                <div className='text-[15px]'>{msg.content}</div>
-              </div>
-            )}
-
-            {/* User or Bot Image */}
+        {/* Chat Messages */}
+        <div className='flex-grow overflow-y-auto px-6 py-4 pb-24'>
+          {messages.map((msg, idx) => (
             <div
-              className={`flex-shrink-0 ${
-                msg.role === 'user' ? 'ml-2' : 'mr-2'
+              key={idx}
+              className={`flex my-2 ${
+                msg.role === 'user' ? 'justify-end' : 'justify-start'
               }`}
             >
-              <img
-                src={msg.role === 'user' ? userImage : botImage}
-                alt={msg.role === 'user' ? 'User' : 'Comm-IT AI'}
-                className={`rounded-full object-cover ${
-                  msg.role === 'user'
-                    ? 'ml-2 p-1 w-12 h-12'
-                    : ' bg-gray-900 w-12 h-12'
-                }`}
-              />
-            </div>
+              {/* User Message */}
+              {msg.role === 'user' && (
+                <div
+                  className='
+                    max-w-full sm:max-w-md 
+                    rounded-xl p-3 
+                    bg-[#202327] 
+                    break-words
+                  '
+                >
+                  <div className='text-[16px] break-words'>{msg.content}</div>
+                </div>
+              )}
 
-            {/* Bot Message */}
-            {msg.role === 'assistant' && (
-              <div className='max-w-full sm:max-w-md rounded-xl p-3 bg-black'>
-                <div className='text-[15px]'>
-                  <Typewriter text={msg.content} />
-                </div>
-                <div className='flex items-center gap-3 mt-2 text-gray-400 text-md'>
-                  <AiOutlineLike
-                    className='cursor-pointer'
-                    onClick={() => handleLike(Math.floor(idx / 2))}
-                  />
-                  <AiOutlineDislike
-                    className='cursor-pointer'
-                    onClick={() =>
-                      handleFeedbackClick({
-                        ...msg,
-                        index: Math.floor(idx / 2),
-                      })
-                    }
-                  />
-                  <BiCopyAlt
-                    className='cursor-pointer'
-                    onClick={() => handleCopy(msg.content)}
-                  />
-                  <MdOutlineSupportAgent 
-                    className='cursor-pointer'
-                    onClick={() =>
-                      handleFeedbackClick({
-                        ...msg,
-                        index: Math.floor(idx / 2),
-                      })
-                    }
-                  />
-                  <TbReload
-                    className='cursor-pointer'
-                    onClick={() => handleReload(Math.floor(idx / 2))}
-                  />
-                </div>
+              {/* User or Bot Image */}
+              <div
+                className={`flex-shrink-0 ${
+                  msg.role === 'user' ? 'ml-2' : 'mr-2'
+                }`}
+              >
+                <img
+                  src={msg.role === 'user' ? userImage : botImage}
+                  alt={msg.role === 'user' ? 'User' : 'Comm-IT AI'}
+                  className={`rounded-full object-cover ${
+                    msg.role === 'user'
+                      ? 'ml-2 p-1 w-15 h-12'
+                      : ' bg-gray-900 w-12 h-12'
+                  }`}
+                />
               </div>
-            )}
-          </div>
-        ))}
-        <div ref={messagesEndRef} />
+
+              {/* Bot Message */}
+              {msg.role === 'assistant' && (
+                <div
+                  className='
+                    max-w-full sm:max-w-md 
+                    rounded-xl p-3 
+                    bg-black 
+                    break-words
+                  '
+                >
+                  <div className='text-[16px] break-words'>
+                    <Typewriter text={msg.content} />
+                  </div>
+                  <div className='flex items-center gap-3 mt-2 text-gray-400 text-md'>
+                    <AiOutlineLike
+                      className='cursor-pointer'
+                      onClick={() => handleLike(Math.floor(idx / 2))}
+                    />
+                    <AiOutlineDislike
+                      className='cursor-pointer'
+                      onClick={() =>
+                        handleFeedbackClick({
+                          ...msg,
+                          index: Math.floor(idx / 2),
+                        })
+                      }
+                    />
+                    <BiCopyAlt
+                      className='cursor-pointer'
+                      onClick={() => handleCopy(msg.content)}
+                    />
+                    <MdOutlineSupportAgent
+                      className='cursor-pointer'
+                      onClick={() =>
+                        handleFeedbackClick({
+                          ...msg,
+                          index: Math.floor(idx / 2),
+                        })
+                      }
+                    />
+                    <TbReload
+                      className='cursor-pointer'
+                      onClick={() => handleReload(Math.floor(idx / 2))}
+                    />
+                  </div>
+                </div>
+              )}
+            </div>
+          ))}
+          <div ref={messagesEndRef} />
+        </div>
       </div>
 
       {/* Input Bar */}
@@ -240,7 +264,14 @@ const Chat = () => {
           <input
             type='text'
             placeholder='Ask anything'
-            className='flex-grow p-3 bg-[#202327] text-white outline-none rounded-none focus:ring-0'
+            className='
+              flex-grow p-3 
+              bg-[#202327] 
+              text-white 
+              outline-none 
+              rounded-none 
+              focus:ring-0
+            '
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={handleKeyDown}
@@ -255,7 +286,7 @@ const Chat = () => {
           </button>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

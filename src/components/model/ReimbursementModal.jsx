@@ -1,6 +1,6 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
-import logo from '../../assets/logogen.png';
+import logo from '../../assets/logo-5.png';
 import { CgClose } from 'react-icons/cg';
 
 const ReimbursementModal = ({ isOpen, setIsOpen }) => {

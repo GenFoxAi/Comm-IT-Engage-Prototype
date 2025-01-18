@@ -1,8 +1,8 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
-import logo from '../../assets/logogen.png';
+import logo from '../../assets/logo-5.png';
 import { CgClose } from 'react-icons/cg';
-import profile from '../../assets/6681204.png';
+import profile from '../../assets/profile-test.jpg';
 import { BsGlobe } from 'react-icons/bs';
 import { IoIosArrowDown } from 'react-icons/io';
 import { AiOutlineDislike, AiOutlineLike } from 'react-icons/ai';
@@ -65,7 +65,11 @@ const SupportModel = ({ isOpen, setIsOpen, userQuestion, botReply }) => {
             <div className='p-5 flex items-center justify-between w-full'>
               <div>
                 <div className='flex items-center gap-3'>
-                  <img className='h-8' src={profile} alt='profile' />
+                  <img
+                    className='h-8 rounded-full'
+                    src={profile}
+                    alt='profile'
+                  />
                   <p>{userQuestion}</p>
                 </div>
 
@@ -95,11 +99,7 @@ const SupportModel = ({ isOpen, setIsOpen, userQuestion, botReply }) => {
             {/* Bot Response Section */}
             <div className='p-5 flex flex-col sm:flex-row justify-between w-full'>
               <div className='flex gap-3'>
-                <img
-                  className='h-8 rounded-full border'
-                  src={logo}
-                  alt='logo'
-                />
+                <img className='h-8 rounded-full' src={logo} alt='logo' />
                 <div className='flex-col'>
                   <p className='text-[15px]'>
                     I understand you want to find information about "
@@ -126,16 +126,16 @@ const SupportModel = ({ isOpen, setIsOpen, userQuestion, botReply }) => {
             {/* Additional Feedback Section */}
             <div className='px-8 pt-4'>
               <h4 className='text-md font-semibold text-gray-300'>
-                Provide additional feedback (Optional)
+                Raise a Support Ticket (Optional)
               </h4>
               <p className='text-sm text-gray-500 mb-3'>
-                Thanks for your rating. Your additional feedback will help us
-                improve.
+                We value your comments. Let us know how we can assist you
+                better.
               </p>
               <textarea
                 value={additionalFeedback}
                 onChange={(e) => setAdditionalFeedback(e.target.value)}
-                placeholder='Additional Feedback'
+                placeholder='Describe your issue or request here..'
                 className='w-full h-20 bg-[#10141c] p-3 rounded-md border border-gray-800 text-gray-300 
                            resize-none focus:outline-none focus:ring focus:ring-indigo-200'
               />
