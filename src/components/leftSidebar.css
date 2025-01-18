@@ -1,0 +1,25 @@
+.left-sidebar::-webkit-scrollbar {
+    width: 5px;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  
+  .left-sidebar:hover::-webkit-scrollbar,
+  .left-sidebar:active::-webkit-scrollbar,
+  .left-sidebar.nav::-webkit-scrollbar-thumb {
+    opacity: 1;
+  }
+  
+  .left-sidebar::-webkit-scrollbar-track {
+    background: #7e7d7d00;
+  }
+  
+  .left-sidebar::-webkit-scrollbar-thumb {
+    background: rgba(30, 30, 30, 0.882);
+    border-radius: 5px;
+  }
+  
+  .left-sidebar::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
+  
