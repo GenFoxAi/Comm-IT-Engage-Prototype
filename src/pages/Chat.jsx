@@ -1,8 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import { CgAttachment } from 'react-icons/cg';
-import userImage from '../assets/6681204.png';
-import botImage from '../assets/logogen.png';
+import userImage from '../assets/profile-test.jpg';
+import botImage from '../assets/bot.png';
 import Typewriter from '../components/Typewriter';
 import SupportModel from '../components/model/SupportModel';
 import { AiOutlineDislike, AiOutlineLike } from 'react-icons/ai';
@@ -11,6 +11,7 @@ import { TbReload } from 'react-icons/tb';
 import { GrCircleQuestion } from 'react-icons/gr';
 import SlideInNotifications from '../components/SlideInNotifications'; 
 import { v4 as uuidv4 } from 'uuid'; 
+import { MdOutlineSupportAgent } from 'react-icons/md';
 
 const Chat = () => {
   const location = useLocation();
@@ -37,8 +38,6 @@ const Chat = () => {
     userQuestion: '',
     botReply: '',
   });
-
-  
   const [notifications, setNotifications] = useState([]);
 
   const scrollToBottom = () => {
@@ -102,7 +101,6 @@ const Chat = () => {
     setIsModalOpen(true);
   };
 
-  
   const handleCopy = async (text) => {
     try {
       await navigator.clipboard.writeText(text);
@@ -112,7 +110,6 @@ const Chat = () => {
     }
   };
 
- 
   const handleReload = (msgIndex) => {
     const userMessage = messages[msgIndex * 2]?.content || 'N/A';
     const newBotMessage = {
@@ -129,20 +126,16 @@ const Chat = () => {
     addNotification('Bot response reloaded!');
   };
 
- 
   const handleLike = (msgIndex) => {
-  
     addNotification('You liked this response!');
   };
 
-  
   const handleQuestion = (msgIndex) => {
-    
     addNotification('Need more information?');
   };
 
   return (
-    <div className='flex flex-col flex-grow bg-black text-white relative px-[20%] transition-all duration-300'>
+    <div className='flex flex-col flex-grow bg-black text-white relative px-4 md:px-[20%] transition-all duration-300'>
       {/* Modal Component */}
       <SupportModel
         isOpen={isModalOpen}
@@ -157,6 +150,7 @@ const Chat = () => {
         removeNotif={removeNotif}
       />
 
+      {/* Chat Messages */}
       <div className='flex-grow overflow-y-auto px-6 py-4 pb-24'>
         {messages.map((msg, idx) => (
           <div
@@ -167,12 +161,12 @@ const Chat = () => {
           >
             {/* User Message */}
             {msg.role === 'user' && (
-              <div className='max-w-md rounded-xl p-3 bg-[#202327]'>
+              <div className='max-w-full sm:max-w-md rounded-xl p-3 bg-[#202327]'>
                 <div className='text-[15px]'>{msg.content}</div>
               </div>
             )}
 
-            {/* User Image */}
+            {/* User or Bot Image */}
             <div
               className={`flex-shrink-0 ${
                 msg.role === 'user' ? 'ml-2' : 'mr-2'
@@ -183,24 +177,22 @@ const Chat = () => {
                 alt={msg.role === 'user' ? 'User' : 'Comm-IT AI'}
                 className={`rounded-full object-cover ${
                   msg.role === 'user'
-                    ? 'ml-2 p-1 w-10 h-10'
-                    : 'mr-0 bg-gray-900 p-2 w-12 h-12'
+                    ? 'ml-2 p-1 w-12 h-12'
+                    : ' bg-gray-900 w-12 h-12'
                 }`}
               />
             </div>
 
             {/* Bot Message */}
             {msg.role === 'assistant' && (
-              <div className='max-w-md rounded-xl p-3 bg-black'>
+              <div className='max-w-full sm:max-w-md rounded-xl p-3 bg-black'>
                 <div className='text-[15px]'>
                   <Typewriter text={msg.content} />
                 </div>
                 <div className='flex items-center gap-3 mt-2 text-gray-400 text-md'>
                   <AiOutlineLike
                     className='cursor-pointer'
-                    onClick={() =>
-                      handleLike(Math.floor(idx / 2))
-                    }
+                    onClick={() => handleLike(Math.floor(idx / 2))}
                   />
                   <AiOutlineDislike
                     className='cursor-pointer'
@@ -215,7 +207,7 @@ const Chat = () => {
                     className='cursor-pointer'
                     onClick={() => handleCopy(msg.content)}
                   />
-                  <GrCircleQuestion
+                  <MdOutlineSupportAgent 
                     className='cursor-pointer'
                     onClick={() =>
                       handleFeedbackClick({
@@ -226,9 +218,7 @@ const Chat = () => {
                   />
                   <TbReload
                     className='cursor-pointer'
-                    onClick={() =>
-                      handleReload(Math.floor(idx / 2))
-                    }
+                    onClick={() => handleReload(Math.floor(idx / 2))}
                   />
                 </div>
               </div>
@@ -238,8 +228,9 @@ const Chat = () => {
         <div ref={messagesEndRef} />
       </div>
 
+      {/* Input Bar */}
       <div className='fixed bottom-0 left-0 right-0 border-t border-gray-800 p-4 bg-opacity-90 bg-black transition-all duration-300'>
-        <div className='flex items-center max-w-2xl mx-auto w-full'>
+        <div className='flex items-center max-w-full sm:max-w-2xl mx-auto w-full'>
           <button
             className='bg-[#202327] px-4 py-4 rounded-l-full hover:bg-gray-600 flex items-center justify-center'
             aria-label='Attach file'

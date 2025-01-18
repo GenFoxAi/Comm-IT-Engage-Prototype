@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaMoneyCheckAlt } from 'react-icons/fa';
@@ -17,7 +16,6 @@ const Home = () => {
 
   const handleSend = () => {
     if (!input.trim()) return;
-
     navigate('/chat', { state: { initialMessage: input.trim() } });
   };
 
@@ -77,13 +75,14 @@ const Home = () => {
   ];
 
   return (
-    <div className='flex flex-col flex-grow bg-black text-white relative px-[10%] transition-all duration-300'>
+    <div className='flex flex-col flex-grow bg-black text-white relative px-4 md:px-[10%] transition-all duration-300'>
       {/* Modal Component */}
       <SupportModel />
 
       <div className='flex flex-col bg-black text-white relative p-6 pt-[23vh] items-center justify-start'>
         <div className='text-3xl font-semibold mb-8'>Hello, Khan</div>
 
+        {/* Input Row */}
         <div className='w-full max-w-2xl flex items-center mb-2'>
           <button
             className='bg-[#202327] px-4 py-4 rounded-l-full hover:bg-[#202326] flex items-center justify-center'
@@ -111,8 +110,7 @@ const Home = () => {
           Comm-IT AI can make mistakes. Verify its outputs.
         </p>
 
-        {/* Quick Options Section */}
-        <div className='grid grid-cols-4 gap-4 max-w-2xl mx-auto'>
+        <div className='grid grid-cols-2 md:grid-cols-4 gap-4 max-w-2xl mx-auto'>
           {quickOptions.map((option, idx) => (
             <div
               key={idx}
@@ -125,13 +123,13 @@ const Home = () => {
           ))}
         </div>
 
-        {/* Tickets Section */}
         <div className='w-full max-w-2xl grid grid-cols-1 sm:grid-cols-2 gap-4 mt-8'>
           {tickets.map((ticket) => (
             <Ticket key={ticket.id} ticket={ticket} onClick={handleTicketClick} />
           ))}
         </div>
-        <ExampleComponent />
+
+        {/* <ExampleComponent /> */}
       </div>
     </div>
   );

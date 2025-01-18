@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { FaRegPenToSquare } from 'react-icons/fa6';
 import { FiChevronDown, FiCheck } from 'react-icons/fi';
 import { LuTimerReset } from 'react-icons/lu';

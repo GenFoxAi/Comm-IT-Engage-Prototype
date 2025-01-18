@@ -19,7 +19,6 @@ const SupportModel = ({ isOpen, setIsOpen, userQuestion, botReply }) => {
     } else {
       document.body.classList.remove('overflow-hidden');
     }
-
     return () => {
       document.body.classList.remove('overflow-hidden');
     };
@@ -31,7 +30,7 @@ const SupportModel = ({ isOpen, setIsOpen, userQuestion, botReply }) => {
 
   const handleSubmitFeedback = () => {
     console.log('Submitted feedback:', additionalFeedback);
-    setIsOpen(false); 
+    setIsOpen(false);
   };
 
   return (
@@ -49,29 +48,31 @@ const SupportModel = ({ isOpen, setIsOpen, userQuestion, botReply }) => {
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.9, opacity: 0 }}
             onClick={(e) => e.stopPropagation()}
-            className='bg-[#0d0e11] rounded-lg w-full max-w-2xl shadow-2xl cursor-default relative overflow-hidden'
+            className='bg-[#0d0e11] rounded-lg w-full max-w-2xl shadow-2xl cursor-default relative overflow-hidden 
+                       mx-4 sm:mx-0'
           >
-            {/* Header */}
             <div className='bg-black p-3 flex justify-between w-full items-center px-4'>
               <img src={logo} className='h-14' alt='logo' />
               <div
                 onClick={() => setIsOpen(false)}
-                className='flex justify-center cursor-pointer items-center hover:bg-gray-800 w-16 h-16 rounded-full '
+                className='flex justify-center cursor-pointer items-center hover:bg-gray-800 w-16 h-16 rounded-full'
               >
                 <CgClose className='text-blue-500 text-2xl' />
               </div>
             </div>
 
-            <div className='p-5 flex justify-between w-full'>
-              <div className='flex flex-col'>
-                <div className='flex gap-3'>
+            {/* User Question Section */}
+            <div className='p-5 flex items-center justify-between w-full'>
+              <div>
+                <div className='flex items-center gap-3'>
                   <img className='h-8' src={profile} alt='profile' />
                   <p>{userQuestion}</p>
                 </div>
-                <div className='ml-10'>
+
+                <div className='mt-2'>
                   <div
                     onClick={toggleDropdown}
-                    className='text-xs bg-black px-2 rounded-md py-1 flex items-center gap-x-2 cursor-pointer'
+                    className='text-xs bg-black px-2 rounded-md py-1 inline-flex items-center gap-2 cursor-pointer'
                   >
                     ✨ Reveal AI Reasoning <IoIosArrowDown size={15} />
                   </div>
@@ -84,12 +85,15 @@ const SupportModel = ({ isOpen, setIsOpen, userQuestion, botReply }) => {
                   )}
                 </div>
               </div>
+
+              {/* Globe Icon */}
               <div className='flex justify-center items-center'>
                 <BsGlobe size={22} className='cursor-pointer' />
               </div>
             </div>
 
-            <div className='p-5 flex justify-between w-full'>
+            {/* Bot Response Section */}
+            <div className='p-5 flex flex-col sm:flex-row justify-between w-full'>
               <div className='flex gap-3'>
                 <img
                   className='h-8 rounded-full border'
@@ -132,21 +136,22 @@ const SupportModel = ({ isOpen, setIsOpen, userQuestion, botReply }) => {
                 value={additionalFeedback}
                 onChange={(e) => setAdditionalFeedback(e.target.value)}
                 placeholder='Additional Feedback'
-                className='w-full h-20 bg-[#10141c] p-3 rounded-md border border-gray-800 text-gray-300 resize-none focus:outline-none focus:ring focus:ring-indigo-200'
+                className='w-full h-20 bg-[#10141c] p-3 rounded-md border border-gray-800 text-gray-300 
+                           resize-none focus:outline-none focus:ring focus:ring-indigo-200'
               />
             </div>
 
             {/* Buttons */}
-            <div className='flex gap-4 p-8'>
+            <div className='flex flex-col sm:flex-row gap-4 p-8'>
               <button
                 onClick={() => setIsOpen(false)}
-                className='flex-1 bg-gray-900  text-white font-semibold py-2 rounded-md hover:bg-gray-900 transition'
+                className='flex-1 bg-gray-900 text-white font-semibold py-2 rounded-md hover:bg-gray-800 transition'
               >
                 Cancel
               </button>
               <button
                 onClick={handleSubmitFeedback}
-                className='flex-1 bg-black  text-white font-semibold py-2 rounded-md hover:bg-gray-900 transition'
+                className='flex-1 bg-black text-white font-semibold py-2 rounded-md hover:bg-gray-900 transition'
               >
                 Submit Feedback
               </button>
