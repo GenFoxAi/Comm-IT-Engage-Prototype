@@ -1,34 +1,24 @@
 import { useState, useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import { CgAttachment } from 'react-icons/cg';
-import userImage from '../assets/profile-test.jpg';
-import botImage from '../assets/logo-5.png';
-import Typewriter from '../components/Typewriter';
+import userImage from '../assets/profile-test.jpg';  
+import botImage from '../assets/logo-5.png';         
+import { TextGenerateEffect } from '../components/Typewriter';   
 import SupportModel from '../components/model/SupportModel';
 import { AiOutlineDislike, AiOutlineLike } from 'react-icons/ai';
 import { BiCopyAlt } from 'react-icons/bi';
 import { TbReload } from 'react-icons/tb';
-import { GrCircleQuestion } from 'react-icons/gr';
+import { MdOutlineSupportAgent } from 'react-icons/md'; 
 import SlideInNotifications from '../components/SlideInNotifications';
 import { v4 as uuidv4 } from 'uuid';
-import { MdOutlineSupportAgent } from 'react-icons/md';
+import axios from 'axios';
 
 const Chat = () => {
   const location = useLocation();
   const initialMessage = location.state?.initialMessage || '';
 
-  const [messages, setMessages] = useState(() => {
-    if (initialMessage) {
-      return [
-        { role: 'user', content: initialMessage },
-        {
-          role: 'assistant',
-          content: `This is a placeholder response for: "${initialMessage}"`,
-        },
-      ];
-    }
-    return [];
-  });
+  
+  const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
   const messagesEndRef = useRef(null);
   const inputRef = useRef(null);
@@ -39,6 +29,15 @@ const Chat = () => {
     botReply: '',
   });
   const [notifications, setNotifications] = useState([]);
+  const hasInitialMessageBeenSent = useRef(false);
+
+  
+  const transformToBackendMessageFormat = (frontendMessages) => {
+    return frontendMessages.map((message) => ({
+      role: message.role,
+      content: message.content,
+    }));
+  };
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -56,6 +55,14 @@ const Chat = () => {
     focusInput();
   }, []);
 
+  
+  useEffect(() => {
+    if (initialMessage && !hasInitialMessageBeenSent.current) {
+      handleSend(initialMessage);
+      hasInitialMessageBeenSent.current = true;
+    }
+  }, [initialMessage]);
+
   const addNotification = (text) => {
     const newNotification = {
       id: uuidv4(),
@@ -68,19 +75,36 @@ const Chat = () => {
     setNotifications((prev) => prev.filter((n) => n.id !== id));
   };
 
-  const handleSend = () => {
-    if (!input.trim()) return;
+  
+  const handleSend = async (inputMessage) => {
+    const messageContent = inputMessage || input.trim();
+    if (!messageContent) return;
 
-    const userMessage = { role: 'user', content: input.trim() };
-    const botMessage = {
-      role: 'assistant',
-      content: `This is a placeholder response for: "${input.trim()}"`,
-    };
+    const userMessage = { role: 'user', content: messageContent };
+    setMessages((prev) => [...prev, userMessage]);
 
-    setMessages((prev) => [...prev, userMessage, botMessage]);
-    setInput('');
+   
+    if (!inputMessage) {
+      setInput('');
+    }
+
+    try {
+      const response = await axios.post('http://localhost:8000/chat/', {
+        messages: transformToBackendMessageFormat([...messages, userMessage]),
+      });
+
+      const botReply =
+        response.data.messages.slice(-1)[0]?.content || 'Error in response';
+
+      const botMessage = { role: 'assistant', content: botReply };
+      setMessages((prev) => [...prev, botMessage]);
+    } catch (error) {
+      console.error('Error sending message:', error);
+      addNotification('Error connecting to the server!');
+    }
   };
 
+  
   const handleKeyDown = (e) => {
     if (e.key === 'Enter') {
       e.preventDefault();
@@ -88,9 +112,11 @@ const Chat = () => {
     }
   };
 
+  
   const handleFeedbackClick = (msg) => {
     if (msg.role !== 'assistant') return;
 
+  
     const userMsgIndex = messages.findIndex(
       (m, idx) => m.role === 'user' && idx === msg.index * 2
     );
@@ -110,6 +136,7 @@ const Chat = () => {
     }
   };
 
+  
   const handleReload = (msgIndex) => {
     const userMessage = messages[msgIndex * 2]?.content || 'N/A';
     const newBotMessage = {
@@ -134,9 +161,10 @@ const Chat = () => {
     addNotification('Need more information?');
   };
 
+  
   return (
     <>
-      {/* Outer wrapper - no overflow-x-hidden needed here */}
+      {/* Outer wrapper */}
       <div
         className='
           flex flex-col flex-grow 
@@ -209,10 +237,10 @@ const Chat = () => {
                     break-words
                   '
                 >
-                  <div className='text-[16px] break-words'>
-                    <Typewriter text={msg.content} />
+                  <div className='text-[16px] break-words'>                
+                    <TextGenerateEffect words={msg.content || ""} duration={0.5} filter={true} />
                   </div>
-                  <div className='flex items-center gap-3 mt-2 text-gray-400 text-md'>
+                  <div className='flex items-center gap-3 mt-1 text-gray-400 text-md'>
                     <AiOutlineLike
                       className='cursor-pointer'
                       onClick={() => handleLike(Math.floor(idx / 2))}
@@ -279,7 +307,7 @@ const Chat = () => {
           />
           <button
             className='bg-[#202327] px-4 py-3 rounded-r-full hover:bg-gray-600 flex items-center justify-center'
-            onClick={handleSend}
+            onClick={() => handleSend()}
             aria-label='Send message'
           >
             ➤

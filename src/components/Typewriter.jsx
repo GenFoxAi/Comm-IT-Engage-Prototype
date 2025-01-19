@@ -1,24 +1,52 @@
+import { useEffect } from "react";
+import { motion, stagger, useAnimate } from "framer-motion";
+import clsx from "clsx";
 
-import { useState, useEffect, useRef } from 'react';
-
-const Typewriter = ({ text }) => {
-  const [typed, setTyped] = useState('');
-  const indexRef = useRef(0);
+export const TextGenerateEffect = ({
+  words = "",
+  className,
+  filter = true,
+  duration = 0.5,
+}) => {
+  const [scope, animate] = useAnimate();
+  const wordsArray = words.split(" ");
 
   useEffect(() => {
-    setTyped('');
-    indexRef.current = 0;
-    const timer = setInterval(() => {
-      setTyped((prev) => prev + text[indexRef.current]);
-      indexRef.current++;
-      if (indexRef.current === text.length) {
-        clearInterval(timer);
+   
+    animate(
+      "span",
+      { opacity: 1, filter: filter ? "blur(0px)" : "none" },
+      {
+        duration: duration,
+        delay: stagger(0.1), 
       }
-    }, 30);
-    return () => clearInterval(timer);
-  }, [text]);
+    );
+  }, [scope, animate, filter, duration]);
 
-  return <span>{typed}</span>;
+  const renderWords = () =>
+    <motion.div ref={scope}>
+      {wordsArray.map((word, idx) => {
+        return (
+          <motion.span
+            key={`${word}-${idx}`}
+            className="dark:text-white text-black opacity-0"
+            style={{
+              filter: filter ? "blur(10px)" : "none",
+            }}
+          >
+            {word}{" "}
+          </motion.span>
+        );
+      })}
+    </motion.div>;
+
+  return (
+    <div className={clsx("", className)}>
+      <div className="">
+        <div className="text-white  text-[16px]">
+          {renderWords()}
+        </div>
+      </div>
+    </div>
+  );
 };
-
-export default Typewriter;
