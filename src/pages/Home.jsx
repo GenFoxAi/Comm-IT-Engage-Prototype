@@ -7,7 +7,7 @@ import { MdOutlineEventNote } from 'react-icons/md';
 import { FaUserCheck } from 'react-icons/fa6';
 import { GiReceiveMoney } from 'react-icons/gi';
 import { tickets } from '../data/tickets';
-import Ticket from '../components/Ticket'; 
+import Ticket from '../components/Ticket';
 import ExampleComponent from '../components/ExampleComponent';
 
 const Home = () => {
@@ -85,10 +85,20 @@ const Home = () => {
         {/* Input Row */}
         <div className='w-full max-w-[718px] flex items-center mb-2'>
           <button
-            className='bg-[#202327] px-4 py-4 rounded-l-full hover:bg-[#202326] flex items-center justify-center'
+            className='bg-[#202327] px-4 py-4 rounded-l-full hover:bg-gray-600 flex items-center justify-center relative'
             aria-label='Attach file'
           >
             <CgAttachment className='text-white' />
+            <input
+              type='file'
+              className='absolute inset-0 opacity-0 cursor-pointer'
+              onChange={(e) => {
+                const file = e.target.files[0];
+                if (file) {
+                  console.log('Uploaded file:', file);
+                }
+              }}
+            />
           </button>
           <input
             type='text'
@@ -125,7 +135,11 @@ const Home = () => {
 
         <div className='w-full max-w-[718px] grid grid-cols-1 sm:grid-cols-2 gap-4 mt-8'>
           {tickets.map((ticket) => (
-            <Ticket key={ticket.id} ticket={ticket} onClick={handleTicketClick} />
+            <Ticket
+              key={ticket.id}
+              ticket={ticket}
+              onClick={handleTicketClick}
+            />
           ))}
         </div>
 

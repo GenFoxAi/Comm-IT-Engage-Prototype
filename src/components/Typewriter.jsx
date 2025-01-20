@@ -18,7 +18,7 @@ export const TextGenerateEffect = ({
       { opacity: 1, filter: filter ? "blur(0px)" : "none" },
       {
         duration: duration,
-        delay: stagger(0.1), 
+        delay: stagger(0.03), 
       }
     );
   }, [scope, animate, filter, duration]);
