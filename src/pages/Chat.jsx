@@ -1,4 +1,3 @@
-// Chat.jsx
 import { useState, useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import { CgAttachment } from 'react-icons/cg';
@@ -16,8 +15,8 @@ import axios from 'axios';
 import LeaveRequestModal from '../components/model/LeaveRequestModal';
 import ReimbursementModal from '../components/model/ReimbursementModal';
 import Loader from '../components/loader/Loader';
-import ReactMarkdown from 'react-markdown'; // Import ReactMarkdown
-import rehypeSanitize from 'rehype-sanitize'; // For security
+import ReactMarkdown from 'react-markdown'; 
+import rehypeSanitize from 'rehype-sanitize';
 
 const Chat = () => {
   const location = useLocation();
@@ -38,7 +37,7 @@ const Chat = () => {
 
   const [isLoading, setIsLoading] = useState(false); 
 
-  // New state to track typing completion for the latest assistant message
+ 
   const [typedMessageIndices, setTypedMessageIndices] = useState(new Set());
 
   const transformToBackendMessageFormat = (frontendMessages) => {
@@ -202,7 +201,7 @@ const Chat = () => {
   const [leaveModalOpen, setLeaveModalOpen] = useState(false);
   const [reimbursementModalOpen, setReimbursementModalOpen] = useState(false);
 
-  // Function to handle the completion of typing animation
+  
   const handleTypingComplete = (msgIndex) => {
     setTypedMessageIndices((prev) => new Set(prev).add(msgIndex));
   };
@@ -243,8 +242,8 @@ const Chat = () => {
         {/* Chat Messages */}
         <div className='flex-grow overflow-y-auto px-6 py-4 pb-24'>
           {messages.map((msg, idx) => {
-            // Calculate message index for type tracking
-            const msgIndex = idx; // Assuming each message has a unique index
+           
+            const msgIndex = idx; 
 
             return (
               <div
@@ -320,7 +319,7 @@ const Chat = () => {
                             )}
                           </>
                         ) : (
-                          // Conditionally render TextGenerateEffect or ReactMarkdown
+                         
                           typedMessageIndices.has(idx) ? (
                             <ReactMarkdown rehypePlugins={[rehypeSanitize]}>
                               {msg.content || ''}
