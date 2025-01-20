@@ -1,3 +1,4 @@
+// Chat.jsx
 import { useState, useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import { CgAttachment } from 'react-icons/cg';
@@ -15,6 +16,8 @@ import axios from 'axios';
 import LeaveRequestModal from '../components/model/LeaveRequestModal';
 import ReimbursementModal from '../components/model/ReimbursementModal';
 import Loader from '../components/loader/Loader';
+import ReactMarkdown from 'react-markdown'; // Import ReactMarkdown
+import rehypeSanitize from 'rehype-sanitize'; // For security
 
 const Chat = () => {
   const location = useLocation();
@@ -34,6 +37,9 @@ const Chat = () => {
   const hasInitialMessageBeenSent = useRef(false);
 
   const [isLoading, setIsLoading] = useState(false); 
+
+  // New state to track typing completion for the latest assistant message
+  const [typedMessageIndices, setTypedMessageIndices] = useState(new Set());
 
   const transformToBackendMessageFormat = (frontendMessages) => {
     return frontendMessages.map((message) => ({
@@ -196,6 +202,11 @@ const Chat = () => {
   const [leaveModalOpen, setLeaveModalOpen] = useState(false);
   const [reimbursementModalOpen, setReimbursementModalOpen] = useState(false);
 
+  // Function to handle the completion of typing animation
+  const handleTypingComplete = (msgIndex) => {
+    setTypedMessageIndices((prev) => new Set(prev).add(msgIndex));
+  };
+
   return (
     <>
       {/* Modals */}
@@ -231,131 +242,143 @@ const Chat = () => {
 
         {/* Chat Messages */}
         <div className='flex-grow overflow-y-auto px-6 py-4 pb-24'>
-          {messages.map((msg, idx) => (
-            <div
-              key={idx}
-              className={`flex my-2 ${
-                msg.role === 'user' ? 'justify-end' : 'justify-start'
-              }`}
-            >
-              {/* Message Container */}
+          {messages.map((msg, idx) => {
+            // Calculate message index for type tracking
+            const msgIndex = idx; // Assuming each message has a unique index
+
+            return (
               <div
-                className={`flex items-start w-full ${
-                  msg.role === 'user' ? 'flex-row-reverse' : 'flex-row'
+                key={idx}
+                className={`flex my-2 ${
+                  msg.role === 'user' ? 'justify-end' : 'justify-start'
                 }`}
               >
-                {/* User or Bot Image */}
+                {/* Message Container */}
                 <div
-                  className={`flex-shrink-0 ${
-                    msg.role === 'user' ? 'ml-2' : 'mr-2'
+                  className={`flex items-start w-full ${
+                    msg.role === 'user' ? 'flex-row-reverse' : 'flex-row'
                   }`}
                 >
-                  <img
-                    src={msg.role === 'user' ? userImage : botImage}
-                    alt={msg.role === 'user' ? 'User' : 'Comm-IT AI'}
-                    className={`rounded-full object-cover ${
-                      msg.role === 'user'
-                        ? 'w-12 h-12'
-                        : 'bg-gray-900 w-12 h-12'
+                  {/* User or Bot Image */}
+                  <div
+                    className={`flex-shrink-0 ${
+                      msg.role === 'user' ? 'ml-2' : 'mr-2'
                     }`}
-                  />
-                </div>
-
-                {/* Message Bubble */}
-                <div
-                  className={`
-                    w-fit
-                    rounded-xl p-3 
-                    ${
-                      msg.role === 'user'
-                        ? 'bg-[#202327] text-left max-w-[85%]'
-                        : 'bg-black w-[85%]'
-                    } 
-                    break-words
-                  `}
-                >
-                  <div className='text-[16px] break-words'>
-                    {msg.role === 'assistant' ? (
-                      msg.content.includes(
-                        'click here to open the leave application'
-                      ) ||
-                      msg.content.includes(
-                        'click here to open the reimbursement submission'
-                      ) ? (
-                        <>
-                          {msg.content.includes(
-                            'click here to open the leave application'
-                          ) && (
-                            <button
-                              className='text-blue-300 font-semibold'
-                              onClick={() => setLeaveModalOpen(true)}
-                            >
-                              Click here to open leave application.
-                            </button>
-                          )}
-                          {msg.content.includes(
-                            'click here to open the reimbursement submission'
-                          ) && (
-                            <button
-                              className='text-blue-300 font-semibold'
-                              onClick={() => setReimbursementModalOpen(true)}
-                            >
-                              Click here to open reimbursement submission.
-                            </button>
-                          )}
-                        </>
-                      ) : (
-                        <TextGenerateEffect
-                          words={msg.content || ''}
-                          duration={0.5}
-                          filter={true}
-                        />
-                      )
-                    ) : (
-                     
-                      <span>{msg.content}</span>
-                    )}
+                  >
+                    <img
+                      src={msg.role === 'user' ? userImage : botImage}
+                      alt={msg.role === 'user' ? 'User' : 'Comm-IT AI'}
+                      className={`rounded-full object-cover ${
+                        msg.role === 'user'
+                          ? 'w-12 h-12'
+                          : 'bg-gray-900 w-12 h-12'
+                      }`}
+                    />
                   </div>
 
-                  {/* Action Buttons */}
-                  {msg.role === 'assistant' && (
-                    <div className='flex items-center gap-3 mt-2 text-gray-400 text-md'>
-                      <AiOutlineLike
-                        className='cursor-pointer'
-                        onClick={() => handleLike(Math.floor(idx / 2))}
-                      />
-                      <AiOutlineDislike
-                        className='cursor-pointer'
-                        onClick={() =>
-                          handleFeedbackClick({
-                            ...msg,
-                            index: Math.floor(idx / 2),
-                          })
-                        }
-                      />
-                      <BiCopyAlt
-                        className='cursor-pointer'
-                        onClick={() => handleCopy(msg.content)}
-                      />
-                      <MdOutlineSupportAgent
-                        className='cursor-pointer'
-                        onClick={() =>
-                          handleFeedbackClick({
-                            ...msg,
-                            index: Math.floor(idx / 2),
-                          })
-                        }
-                      />
-                      <TbReload
-                        className='cursor-pointer'
-                        onClick={() => handleReload(Math.floor(idx / 2))}
-                      />
+                  {/* Message Bubble */}
+                  <div
+                    className={`
+                      w-fit
+                      rounded-xl p-3 
+                      ${
+                        msg.role === 'user'
+                          ? 'bg-[#202327] text-left max-w-[85%]'
+                          : 'bg-black w-[85%]'
+                      } 
+                      break-words
+                    `}
+                  >
+                    <div className='text-[16px] break-words'>
+                      {msg.role === 'assistant' ? (
+                        msg.content.includes(
+                          'click here to open the leave application'
+                        ) ||
+                        msg.content.includes(
+                          'click here to open the reimbursement submission'
+                        ) ? (
+                          <>
+                            {msg.content.includes(
+                              'click here to open the leave application'
+                            ) && (
+                              <button
+                                className='text-blue-300 font-semibold'
+                                onClick={() => setLeaveModalOpen(true)}
+                              >
+                                Click here to open leave application.
+                              </button>
+                            )}
+                            {msg.content.includes(
+                              'click here to open the reimbursement submission'
+                            ) && (
+                              <button
+                                className='text-blue-300 font-semibold'
+                                onClick={() => setReimbursementModalOpen(true)}
+                              >
+                                Click here to open reimbursement submission.
+                              </button>
+                            )}
+                          </>
+                        ) : (
+                          // Conditionally render TextGenerateEffect or ReactMarkdown
+                          typedMessageIndices.has(idx) ? (
+                            <ReactMarkdown rehypePlugins={[rehypeSanitize]}>
+                              {msg.content || ''}
+                            </ReactMarkdown>
+                          ) : (
+                            <TextGenerateEffect
+                              words={msg.content || ''}
+                              duration={0.5}
+                              filter={true}
+                              onComplete={() => handleTypingComplete(idx)}
+                            />
+                          )
+                        )
+                      ) : (
+                        <span>{msg.content}</span>
+                      )}
                     </div>
-                  )}
+
+                    {/* Action Buttons */}
+                    {msg.role === 'assistant' && (
+                      <div className='flex items-center gap-3 mt-2 text-gray-400 text-md'>
+                        <AiOutlineLike
+                          className='cursor-pointer'
+                          onClick={() => handleLike(Math.floor(idx / 2))}
+                        />
+                        <AiOutlineDislike
+                          className='cursor-pointer'
+                          onClick={() =>
+                            handleFeedbackClick({
+                              ...msg,
+                              index: Math.floor(idx / 2),
+                            })
+                          }
+                        />
+                        <BiCopyAlt
+                          className='cursor-pointer'
+                          onClick={() => handleCopy(msg.content)}
+                        />
+                        <MdOutlineSupportAgent
+                          className='cursor-pointer'
+                          onClick={() =>
+                            handleFeedbackClick({
+                              ...msg,
+                              index: Math.floor(idx / 2),
+                            })
+                          }
+                        />
+                        <TbReload
+                          className='cursor-pointer'
+                          onClick={() => handleReload(Math.floor(idx / 2))}
+                        />
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
 
           {/* Render Loader as a bot message if loading */}
           {isLoading && (
