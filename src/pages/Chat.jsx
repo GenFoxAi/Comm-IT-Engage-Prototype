@@ -15,11 +15,14 @@ import axios from "axios";
 import LeaveRequestModal from "../components/model/LeaveRequestModal";
 import ReimbursementModal from "../components/model/ReimbursementModal";
 import Loader from "../components/loader/Loader";
+import { useLeaveRequests } from "../contexts/LeaveRequestContext";
+import { useReimbursements } from "../contexts/ReimbursementContext";
 
 const Chat = () => {
   const location = useLocation();
   const initialMessage = location.state?.initialMessage || "";
-
+  const { addLeaveRequest } = useLeaveRequests();
+  const { addReimbursement } = useReimbursements();
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
   const messagesEndRef = useRef(null);
@@ -78,7 +81,34 @@ const Chat = () => {
   const removeNotif = (id) => {
     setNotifications((prev) => prev.filter((n) => n.id !== id));
   };
+  const handleReimbursementSubmit = (reimbursementData) => {
+    addReimbursement(reimbursementData);
+    const confirmationMessage = {
+      role: "assistant",
+      content: `Your reimbursement application has been submitted successfully. Below are the details of your application:\n
+      - **Expense Type:** ${reimbursementData.expenseType}\n
+      - **Expense Amount:** ${reimbursementData.expenseAmount}SAR\n
+      - **Date:** ${reimbursementData.expenseDate}\n
+      - **Description:** ${reimbursementData.description}\n
+      - **Mode of Payment:** ${reimbursementData.modeOfPayment}\n
+      - **Status:** ${reimbursementData.status}`,
+    };
 
+    setMessages((prev) => [...prev, confirmationMessage]);
+    setReimbursementModalOpen(false);
+  };
+
+  const handleLeaveRequestSubmit = (leaveData) => {
+    addLeaveRequest(leaveData);
+
+    const confirmationMessage = {
+      role: "assistant",
+      content: `Your leave application ticket has been created successfully. Details:\n- **Leave Type:** ${leaveData.leaveType}\n- **Reason:** ${leaveData.reason}\n- **Dates:** ${leaveData.startDate} to ${leaveData.endDate}\n- **Status:** ${leaveData.status}`,
+    };
+
+    setMessages((prev) => [...prev, confirmationMessage]);
+    setLeaveModalOpen(false);
+  };
   const handleSend = async (inputMessage) => {
     const messageContent = inputMessage || input.trim();
     if (!messageContent) return;
@@ -207,10 +237,12 @@ const Chat = () => {
       <LeaveRequestModal
         isOpen={leaveModalOpen}
         setIsOpen={setLeaveModalOpen}
+        onSubmit={handleLeaveRequestSubmit}
       />
       <ReimbursementModal
         isOpen={reimbursementModalOpen}
         setIsOpen={setReimbursementModalOpen}
+        onSubmit={handleReimbursementSubmit}
       />
       <div
         className="
@@ -294,22 +326,30 @@ const Chat = () => {
                             {msg.content.includes(
                               "click here to open the leave application"
                             ) && (
-                              <button
-                                className="text-blue-300 font-semibold"
-                                onClick={() => setLeaveModalOpen(true)}
-                              >
-                                Click here to open leave application.
-                              </button>
+                              <>
+                                <b>Need to apply for leave? </b>
+                                <button
+                                  className="text-blue-300 font-semibold"
+                                  onClick={() => setLeaveModalOpen(true)}
+                                >
+                                  Click here to get started.
+                                </button>
+                              </>
                             )}
                             {msg.content.includes(
                               "click here to open the reimbursement submission"
                             ) && (
-                              <button
-                                className="text-blue-300 font-semibold"
-                                onClick={() => setReimbursementModalOpen(true)}
-                              >
-                                Click here to open reimbursement submission.
-                              </button>
+                              <>
+                                <b>Looking to submit a reimbursement? </b>{" "}
+                                <button
+                                  className="text-blue-300 font-semibold"
+                                  onClick={() =>
+                                    setReimbursementModalOpen(true)
+                                  }
+                                >
+                                  Click here to begin.
+                                </button>
+                              </>
                             )}
                           </>
                         ) : (
