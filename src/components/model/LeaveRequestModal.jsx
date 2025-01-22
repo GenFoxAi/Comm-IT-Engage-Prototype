@@ -1,34 +1,28 @@
-import { AnimatePresence, motion } from "framer-motion";
-import { useEffect, useState } from "react";
-import logo from "../../assets/logo-5.png";
-import { CgClose } from "react-icons/cg";
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import { useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
+import logo from '../../assets/logo-5.png';
+import { CgClose } from 'react-icons/cg';
 
 const LeaveRequestModal = ({ isOpen, setIsOpen, onSubmit }) => {
-  const [leaveType, setLeaveType] = useState("");
-  const [reason, setReason] = useState("");
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
-  const [additionalFeedback, setAdditionalFeedback] = useState("");
-
-  useEffect(() => {
-    if (isOpen) {
-      document.body.classList.add("overflow-hidden");
-    } else {
-      document.body.classList.remove("overflow-hidden");
-    }
-
-    return () => {
-      document.body.classList.remove("overflow-hidden");
-    };
-  }, [isOpen]);
+  const [leaveType, setLeaveType] = useState('');
+  const [reason, setReason] = useState('');
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
+  const [error, setError] = useState('');
 
   const handleSubmit = () => {
+    if (!leaveType || !reason || !startDate || !endDate) {
+      setError('All fields are required.');
+      return;
+    }
     const leaveData = {
       leaveType,
       reason,
-      startDate,
-      endDate,
-      status: "Pending HR Approval",
+      startDate: startDate.toISOString().split('T')[0],
+      endDate: endDate.toISOString().split('T')[0],
+      status: 'Pending HR Approval',
     };
     onSubmit(leaveData);
     setIsOpen(false);
@@ -51,7 +45,6 @@ const LeaveRequestModal = ({ isOpen, setIsOpen, onSubmit }) => {
             onClick={(e) => e.stopPropagation()}
             className="bg-[#0d0e11] rounded-lg w-full max-w-xl shadow-2xl cursor-default relative overflow-hidden"
           >
-            {/* Header */}
             <div className="bg-black p-2 flex justify-between w-full items-center px-4">
               <img src={logo} className="h-12" alt="logo" />
               <div
@@ -61,26 +54,17 @@ const LeaveRequestModal = ({ isOpen, setIsOpen, onSubmit }) => {
                 <CgClose className="text-blue-500 text-xl" />
               </div>
             </div>
-
-            {/* Form Content */}
             <div className="p-4">
-              <h2 className="text-lg font-semibold text-gray-300 mb-3">
-                Submit Leave Request
-              </h2>
-
-              {/* Leave Type */}
+              <h2 className="text-lg font-semibold text-gray-300 mb-3">Submit Leave Request</h2>
+              {error && <p className="text-red-500 text-sm mb-3">{error}</p>}
               <div className="mb-3">
-                <label className="block text-gray-400 text-sm mb-1">
-                  Leave Type
-                </label>
+                <label className="block text-gray-400 text-sm mb-1">Leave Type</label>
                 <select
                   value={leaveType}
                   onChange={(e) => setLeaveType(e.target.value)}
-                  className="w-full bg-[#10141c] p-2.5 rounded-md border border-gray-800 text-gray-300 focus:outline-none focus:ring focus:ring-indigo-200"
+                  className="w-full bg-[#10141c] p-2.5 rounded-md border border-gray-800 text-gray-300"
                 >
-                  <option value="" disabled className="text-gray-400">
-                    Select Leave Type
-                  </option>
+                  <option value="" disabled>Select Leave Type</option>
                   <option value="Annual">Annual Leave</option>
                   <option value="Sick">Sick Leave</option>
                   <option value="Maternity">Maternity Leave</option>
@@ -91,58 +75,46 @@ const LeaveRequestModal = ({ isOpen, setIsOpen, onSubmit }) => {
                   <option value="Other">Other</option>
                 </select>
               </div>
-
-              {/* Reason for Leave */}
               <div className="mb-3">
-                <label className="block text-gray-400 text-sm mb-1">
-                  Reason for Leave
-                </label>
+                <label className="block text-gray-400 text-sm mb-1">Reason for Leave</label>
                 <textarea
                   value={reason}
                   onChange={(e) => setReason(e.target.value)}
                   placeholder="Enter the reason for your leave..."
-                  className="w-full h-16 bg-[#10141c] p-2.5 rounded-md border border-gray-800 text-gray-300 resize-none focus:outline-none focus:ring focus:ring-indigo-200"
+                  className="w-full h-16 bg-[#10141c] p-2.5 rounded-md border border-gray-800 text-gray-300"
                 />
               </div>
-
-              {/* Start Date */}
               <div className="mb-3">
-                <label className="block text-gray-400 text-sm mb-1">
-                  Start Date
-                </label>
-                <input
-                  type="date"
-                  value={startDate}
-                  onChange={(e) => setStartDate(e.target.value)}
-                  className="w-full bg-[#10141c] p-2.5 rounded-md border border-gray-800 text-gray-300 focus:outline-none focus:ring focus:ring-indigo-200 accent-blue-500"
+                <label className="block text-gray-400 text-sm mb-1">Start Date</label>
+                <DatePicker
+                  selected={startDate}
+                  onChange={(date) => setStartDate(date)}
+                  dateFormat="dd-MM-yyyy"
+                  placeholderText="Select start date"
+                  className="w-full bg-[#10141c] p-3 min-w-[450px] sm:min-w-[550px] rounded-md border border-gray-800 text-gray-300"
                 />
               </div>
-
-              {/* End Date */}
               <div className="mb-3">
-                <label className="block text-gray-400 text-sm mb-1">
-                  End Date
-                </label>
-                <input
-                  type="date"
-                  value={endDate}
-                  onChange={(e) => setEndDate(e.target.value)}
-                  className="w-full bg-[#10141c] p-2.5 rounded-md border border-gray-800 text-gray-300 focus:outline-none focus:ring focus:ring-indigo-200 accent-blue-500"
+                <label className="block text-gray-400 text-sm mb-1">End Date</label>
+                <DatePicker
+                  selected={endDate}
+                  onChange={(date) => setEndDate(date)}
+                  dateFormat="dd-MM-yyyy"
+                  placeholderText="Select end date"
+                  className="w-full bg-[#10141c] p-3 min-w-[450px] sm:min-w-[550px] rounded-md border border-gray-800 text-gray-300"
                 />
               </div>
             </div>
-
-            {/* Buttons */}
             <div className="flex gap-3 p-6">
               <button
                 onClick={() => setIsOpen(false)}
-                className="flex-1 bg-gray-900 text-white font-semibold py-1.5 rounded-md hover:bg-gray-800 transition"
+                className="flex-1 bg-gray-900 text-white py-1.5 rounded-md hover:bg-gray-800 transition"
               >
                 Cancel
               </button>
               <button
                 onClick={handleSubmit}
-                className="flex-1 bg-blue-600 text-white font-semibold py-1.5 rounded-md hover:bg-blue-500 transition"
+                className="flex-1 bg-blue-600 text-white py-1.5 rounded-md hover:bg-blue-500 transition"
               >
                 Submit Request
               </button>

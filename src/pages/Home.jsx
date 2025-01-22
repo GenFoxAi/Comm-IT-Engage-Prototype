@@ -64,34 +64,46 @@ const Home = () => {
     },
   ];
 
- 
+  
+  const categorizeTicket = (ticket) => {
+    if (ticket.title?.toLowerCase().includes("salary")) return "Salary";
+    if (ticket.title?.toLowerCase().includes("tax")) return "Tax";
+    if (ticket.title?.toLowerCase().includes("leave")) return "Leave";
+    if (ticket.title?.toLowerCase().includes("bonus")) return "Bonus";
+    if (ticket.title?.toLowerCase().includes("payroll")) return "Payroll";
+    return "General";
+  };
+
   const combinedTickets = [
     ...leaveRequests.map((request, index) => ({
       id: `leave-${index}`,
-      subject: `Leave: ${request.leaveType}`,
-      description: `Reason: ${request.reason}`,
-      ticketNumber: `Leave-${index + 1}`,
+      category: "Leave",
+      subject: `${request.leaveType}`,
+      description: `${request.reason}`,
+      ticketNumber: `#00300${index + 1}`,
       status: request.status,
     })),
     ...reimbursements.map((reimbursement, index) => ({
       id: `reimbursement-${index}`,
-      subject: `Reimbursement: ${reimbursement.expenseType}`,
-      description: `Description: ${reimbursement.description}`,
-      ticketNumber: `Reimbursement-${index + 1}`,
+      category: "Reimbursement",
+      subject: `${reimbursement.expenseType}`,
+      description: `${reimbursement.description}`,
+      ticketNumber: `#00301${index + 1}`,
       status: reimbursement.status,
     })),
-    ...tickets,
+    ...tickets.map((ticket, index) => ({
+      ...ticket,
+      category: categorizeTicket(ticket),
+    })),
   ];
 
   return (
     <div className="flex flex-col flex-grow bg-black text-white relative px-4 md:px-[10%] transition-all duration-300">
-      {/* Modal Component */}
       <SupportModel />
 
       <div className="flex flex-col bg-black text-white relative p-6 pt-[23vh] items-center justify-start">
         <div className="text-3xl font-semibold mb-8">Hello, Khan!</div>
 
-        {/* Input Row */}
         <div className="w-full max-w-[718px] flex items-center mb-2">
           <button
             className="bg-[#202327] px-4 py-4 rounded-l-full hover:bg-gray-600 flex items-center justify-center relative"
@@ -142,7 +154,6 @@ const Home = () => {
           ))}
         </div>
 
-        {/* Tickets Section */}
         <div className="w-full max-w-[718px] grid grid-cols-1 sm:grid-cols-2 gap-4 mt-8">
           {combinedTickets.map((ticket) => (
             <Ticket key={ticket.id} ticket={ticket} onClick={handleTicketClick} />
@@ -154,6 +165,8 @@ const Home = () => {
 };
 
 export default Home;
+
+
 
 
 

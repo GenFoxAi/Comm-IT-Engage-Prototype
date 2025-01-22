@@ -1,4 +1,3 @@
-// Tickets Section
 export const tickets = [
     {
       id: 1,
@@ -30,7 +29,7 @@ export const tickets = [
     {
       id: 4,
       title: 'Cross-Border Tax Issue',
-      subject: 'Tax Compliance for Multi-National Employees',
+      subject: 'Tax Compliance for Employees',
       description: 'Complex tax handling for cross-border employees.',
       ticketNumber: '#003004',
       status: 'Open',

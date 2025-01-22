@@ -1,40 +1,37 @@
-import { AnimatePresence, motion } from "framer-motion";
-import { useEffect, useState } from "react";
-import logo from "../../assets/logo-5.png";
-import { CgClose } from "react-icons/cg";
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import { useState, useEffect } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
+import logo from '../../assets/logo-5.png';
+import { CgClose } from 'react-icons/cg';
 
 const ReimbursementModal = ({ isOpen, setIsOpen, onSubmit }) => {
-  const [expenseType, setExpenseType] = useState("");
-  const [expenseDate, setExpenseDate] = useState("");
-  const [expenseAmount, setExpenseAmount] = useState("");
-  const [description, setDescription] = useState("");
-  const [modeOfPayment, setModeOfPayment] = useState("");
+  const [expenseType, setExpenseType] = useState('');
+  const [expenseDate, setExpenseDate] = useState(null);
+  const [expenseAmount, setExpenseAmount] = useState('');
+  const [description, setDescription] = useState('');
+  const [modeOfPayment, setModeOfPayment] = useState('');
   const [billFile, setBillFile] = useState(null);
-  const [additionalFeedback, setAdditionalFeedback] = useState("");
+  const [error, setError] = useState('');
 
   useEffect(() => {
-    if (isOpen) {
-      document.body.classList.add("overflow-hidden");
-    } else {
-      document.body.classList.remove("overflow-hidden");
-    }
-
-    return () => {
-      document.body.classList.remove("overflow-hidden");
-    };
+    if (isOpen) document.body.classList.add('overflow-hidden');
+    else document.body.classList.remove('overflow-hidden');
+    return () => document.body.classList.remove('overflow-hidden');
   }, [isOpen]);
-  const handleFileChange = (e) => {
-    setBillFile(e.target.files[0]);
-  };
 
   const handleSubmit = () => {
+    if (!expenseType || !expenseDate || !expenseAmount || !description || !modeOfPayment) {
+      setError('All fields are required.');
+      return;
+    }
     const reimbursementData = {
       expenseType,
-      expenseDate,
+      expenseDate: expenseDate.toISOString().split('T')[0],
       expenseAmount,
       description,
       modeOfPayment,
-      status: "Pending HR Approval",
+      status: 'Pending HR Approval',
     };
     onSubmit(reimbursementData);
     setIsOpen(false);
@@ -57,7 +54,6 @@ const ReimbursementModal = ({ isOpen, setIsOpen, onSubmit }) => {
             onClick={(e) => e.stopPropagation()}
             className="bg-[#0d0e11] rounded-lg w-full max-w-xl shadow-2xl cursor-default relative overflow-hidden"
           >
-            {/* Header */}
             <div className="bg-black p-2 flex justify-between w-full items-center px-4">
               <img src={logo} className="h-12" alt="logo" />
               <div
@@ -67,26 +63,17 @@ const ReimbursementModal = ({ isOpen, setIsOpen, onSubmit }) => {
                 <CgClose className="text-blue-500 text-xl" />
               </div>
             </div>
-
-            {/* Form Content */}
             <div className="p-4">
-              <h2 className="text-lg font-semibold text-gray-300 mb-3">
-                Submit Reimbursement
-              </h2>
-
-              {/* Expense Type */}
+              <h2 className="text-lg font-semibold text-gray-300 mb-3">Submit Reimbursement</h2>
+              {error && <p className="text-red-500 text-sm mb-3">{error}</p>}
               <div className="mb-3">
-                <label className="block text-gray-400 text-sm mb-1">
-                  Expense Type
-                </label>
+                <label className="block text-gray-400 text-sm mb-1">Expense Type</label>
                 <select
                   value={expenseType}
                   onChange={(e) => setExpenseType(e.target.value)}
-                  className="w-full bg-[#10141c] p-2.5 rounded-md border border-gray-800 text-gray-300 focus:outline-none focus:ring focus:ring-indigo-200"
+                  className="w-full bg-[#10141c] p-2.5 rounded-md border border-gray-800 text-gray-300"
                 >
-                  <option value="" disabled>
-                    Select Expense Type
-                  </option>
+                  <option value="" disabled>Select Expense Type</option>
                   <option value="Travel">Travel</option>
                   <option value="Meals">Meals</option>
                   <option value="Supplies">Supplies</option>
@@ -94,60 +81,43 @@ const ReimbursementModal = ({ isOpen, setIsOpen, onSubmit }) => {
                   <option value="Other">Other</option>
                 </select>
               </div>
-
-              {/* Expense Date */}
               <div className="mb-3">
-                <label className="block text-gray-400 text-sm mb-1">
-                  Expense Date
-                </label>
-                <input
-                  type="date"
-                  value={expenseDate}
-                  onChange={(e) => setExpenseDate(e.target.value)}
-                  className="w-full bg-[#10141c] p-2.5 rounded-md border border-gray-800 text-gray-300 focus:outline-none focus:ring focus:ring-indigo-200"
+                <label className="block text-gray-400 text-sm mb-1">Expense Date</label>
+                <DatePicker
+                  selected={expenseDate}
+                  onChange={(date) => setExpenseDate(date)}
+                  dateFormat="dd-MM-yyyy"
+                  placeholderText="Select expense date"
+                  className="w-full bg-[#10141c] min-w-[450px] sm:min-w-[550px] p-3 rounded-md border border-gray-800 text-gray-300"
                 />
               </div>
-
-              {/* Expense Amount */}
               <div className="mb-3">
-                <label className="block text-gray-400 text-sm mb-1">
-                  Expense Amount (SAR)
-                </label>
+                <label className="block text-gray-400 text-sm mb-1">Expense Amount (SAR)</label>
                 <input
                   type="number"
                   value={expenseAmount}
                   onChange={(e) => setExpenseAmount(e.target.value)}
                   placeholder="Enter amount in SAR"
-                  className="w-full bg-[#10141c] p-2.5 rounded-md border border-gray-800 text-gray-300 focus:outline-none focus:ring focus:ring-indigo-200"
+                  className="w-full bg-[#10141c] min-w-[450px] sm:min-w-[550px] p-2.5 rounded-md border border-gray-800 text-gray-300"
                 />
               </div>
-
-              {/* Description */}
               <div className="mb-3">
-                <label className="block text-gray-400 text-sm mb-1">
-                  Description
-                </label>
+                <label className="block text-gray-400 text-sm mb-1">Description</label>
                 <textarea
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                   placeholder="Enter a brief description of the expense..."
-                  className="w-full h-16 bg-[#10141c] p-2.5 rounded-md border border-gray-800 text-gray-300 resize-none focus:outline-none focus:ring focus:ring-indigo-200"
+                  className="w-full h-16 bg-[#10141c] min-w-[450px] sm:min-w-[550px] p-2.5 rounded-md border border-gray-800 text-gray-300"
                 />
               </div>
-
-              {/* Mode of Payment */}
               <div className="mb-3">
-                <label className="block text-gray-400 text-sm mb-1">
-                  Mode of Payment
-                </label>
+                <label className="block text-gray-400 text-sm mb-1">Mode of Payment</label>
                 <select
                   value={modeOfPayment}
                   onChange={(e) => setModeOfPayment(e.target.value)}
-                  className="w-full bg-[#10141c] p-2.5 rounded-md border border-gray-800 text-gray-300 focus:outline-none focus:ring focus:ring-indigo-200"
+                  className="w-full bg-[#10141c] p-2.5 rounded-md border border-gray-800 text-gray-300"
                 >
-                  <option value="" disabled>
-                    Select Mode of Payment
-                  </option>
+                  <option value="" disabled>Select Mode of Payment</option>
                   <option value="Credit Card">Credit Card</option>
                   <option value="Debit Card">Debit Card</option>
                   <option value="Bank Transfer">Bank Transfer</option>
@@ -155,30 +125,25 @@ const ReimbursementModal = ({ isOpen, setIsOpen, onSubmit }) => {
                   <option value="Other">Other</option>
                 </select>
               </div>
-              {/* File Upload */}
               <div className="mb-3">
-                <label className="block text-gray-400 text-sm mb-1">
-                  Upload Bill/Receipt
-                </label>
+                <label className="block text-gray-400 text-sm mb-1">Upload Bill/Receipt</label>
                 <input
                   type="file"
-                  onChange={handleFileChange}
-                  className="w-full bg-[#10141c] p-2.5 rounded-md border border-gray-800 text-gray-300 focus:outline-none focus:ring focus:ring-indigo-200"
+                  onChange={(e) => setBillFile(e.target.files[0])}
+                  className="w-full bg-[#10141c] p-2.5 rounded-md border border-gray-800 text-gray-300"
                 />
               </div>
             </div>
-
-            {/* Buttons */}
             <div className="flex gap-3 p-6">
               <button
                 onClick={() => setIsOpen(false)}
-                className="flex-1 bg-gray-900 text-white font-semibold py-1.5 rounded-md hover:bg-gray-800 transition"
+                className="flex-1 bg-gray-900 text-white py-1.5 rounded-md hover:bg-gray-800 transition"
               >
                 Cancel
               </button>
               <button
                 onClick={handleSubmit}
-                className="flex-1 bg-blue-600 text-white font-semibold py-1.5 rounded-md hover:bg-blue-500 transition"
+                className="flex-1 bg-blue-600 text-white py-1.5 rounded-md hover:bg-blue-500 transition"
               >
                 Submit Reimbursement
               </button>
