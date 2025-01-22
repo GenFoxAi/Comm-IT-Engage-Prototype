@@ -66,28 +66,28 @@ const Home = () => {
 
   
   const categorizeTicket = (ticket) => {
-    if (ticket.title?.toLowerCase().includes("salary")) return "Salary";
-    if (ticket.title?.toLowerCase().includes("tax")) return "Tax";
-    if (ticket.title?.toLowerCase().includes("leave")) return "Leave";
-    if (ticket.title?.toLowerCase().includes("bonus")) return "Bonus";
-    if (ticket.title?.toLowerCase().includes("payroll")) return "Payroll";
-    return "General";
+    if (ticket.title?.toLowerCase().includes("salary")) return "Ticket";
+    if (ticket.title?.toLowerCase().includes("tax")) return "Ticket";
+    if (ticket.title?.toLowerCase().includes("leave")) return "Ticket";
+    if (ticket.title?.toLowerCase().includes("bonus")) return "Ticket";
+    if (ticket.title?.toLowerCase().includes("payroll")) return "Ticket";
+    return "Ticket";
   };
 
   const combinedTickets = [
     ...leaveRequests.map((request, index) => ({
       id: `leave-${index}`,
-      category: "Leave",
-      subject: `${request.leaveType}`,
-      description: `${request.reason}`,
+      category: "Leave Request",
+      subject: `Leave Type: ${request.leaveType}`,
+      description: `Reason: ${request.reason}`,
       ticketNumber: `#00300${index + 1}`,
       status: request.status,
     })),
     ...reimbursements.map((reimbursement, index) => ({
       id: `reimbursement-${index}`,
-      category: "Reimbursement",
-      subject: `${reimbursement.expenseType}`,
-      description: `${reimbursement.description}`,
+      category: "Reimbursement Request",
+      subject: `Expense Type: ${reimbursement.expenseType}`,
+      description: `Description: ${reimbursement.description}`,
       ticketNumber: `#00301${index + 1}`,
       status: reimbursement.status,
     })),
