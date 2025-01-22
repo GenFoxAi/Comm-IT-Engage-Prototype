@@ -9,6 +9,7 @@ const ReimbursementModal = ({ isOpen, setIsOpen, onSubmit }) => {
   const [expenseAmount, setExpenseAmount] = useState("");
   const [description, setDescription] = useState("");
   const [modeOfPayment, setModeOfPayment] = useState("");
+  const [billFile, setBillFile] = useState(null);
   const [additionalFeedback, setAdditionalFeedback] = useState("");
 
   useEffect(() => {
@@ -22,6 +23,9 @@ const ReimbursementModal = ({ isOpen, setIsOpen, onSubmit }) => {
       document.body.classList.remove("overflow-hidden");
     };
   }, [isOpen]);
+  const handleFileChange = (e) => {
+    setBillFile(e.target.files[0]);
+  };
 
   const handleSubmit = () => {
     const reimbursementData = {
@@ -150,6 +154,17 @@ const ReimbursementModal = ({ isOpen, setIsOpen, onSubmit }) => {
                   <option value="Cash">Cash</option>
                   <option value="Other">Other</option>
                 </select>
+              </div>
+              {/* File Upload */}
+              <div className="mb-3">
+                <label className="block text-gray-400 text-sm mb-1">
+                  Upload Bill/Receipt
+                </label>
+                <input
+                  type="file"
+                  onChange={handleFileChange}
+                  className="w-full bg-[#10141c] p-2.5 rounded-md border border-gray-800 text-gray-300 focus:outline-none focus:ring focus:ring-indigo-200"
+                />
               </div>
             </div>
 
