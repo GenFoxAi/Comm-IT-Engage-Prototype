@@ -22,7 +22,7 @@ const LeaveRequestModal = ({ isOpen, setIsOpen, onSubmit }) => {
       reason,
       startDate: startDate.toISOString().split('T')[0],
       endDate: endDate.toISOString().split('T')[0],
-      status: 'Pending HR Approval',
+      status: 'Pending',
     };
     onSubmit(leaveData);
     setIsOpen(false);

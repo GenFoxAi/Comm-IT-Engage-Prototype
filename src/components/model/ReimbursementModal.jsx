@@ -31,7 +31,7 @@ const ReimbursementModal = ({ isOpen, setIsOpen, onSubmit }) => {
       expenseAmount,
       description,
       modeOfPayment,
-      status: 'Pending HR Approval',
+      status: 'Pending',
     };
     onSubmit(reimbursementData);
     setIsOpen(false);
