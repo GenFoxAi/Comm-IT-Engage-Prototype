@@ -56,6 +56,7 @@ const ReimbursementModal = ({ isOpen, setIsOpen, onSubmit }) => {
           >
             <div className="bg-black p-2 flex justify-between w-full items-center px-4">
               <img src={logo} className="h-12" alt="logo" />
+              <h2 className="text-lg font-semibold text-gray-300 ">Submit Reimbursement</h2>
               <div
                 onClick={() => setIsOpen(false)}
                 className="flex justify-center cursor-pointer items-center hover:bg-gray-800 w-12 h-12 rounded-full"
@@ -63,15 +64,15 @@ const ReimbursementModal = ({ isOpen, setIsOpen, onSubmit }) => {
                 <CgClose className="text-blue-500 text-xl" />
               </div>
             </div>
-            <div className="p-4">
-              <h2 className="text-lg font-semibold text-gray-300 mb-3">Submit Reimbursement</h2>
+            <div className="px-4 pt-2">
+              
               {error && <p className="text-red-500 text-sm mb-3">{error}</p>}
               <div className="mb-3">
                 <label className="block text-gray-400 text-sm mb-1">Expense Type</label>
                 <select
                   value={expenseType}
                   onChange={(e) => setExpenseType(e.target.value)}
-                  className="w-full bg-[#10141c] p-2.5 rounded-md border border-gray-800 text-gray-300"
+                  className="w-full bg-[#10141c] p-2.5 rounded-md border text-sm border-gray-800 text-gray-300"
                 >
                   <option value="" disabled>Select Expense Type</option>
                   <option value="Travel">Travel</option>
@@ -88,7 +89,7 @@ const ReimbursementModal = ({ isOpen, setIsOpen, onSubmit }) => {
                   onChange={(date) => setExpenseDate(date)}
                   dateFormat="dd-MM-yyyy"
                   placeholderText="Select expense date"
-                  className="w-full bg-[#10141c] min-w-[450px] sm:min-w-[550px] p-3 rounded-md border border-gray-800 text-gray-300"
+                  className="w-full bg-[#10141c] min-w-[450px] text-sm sm:min-w-[550px] p-3 rounded-md border border-gray-800 text-gray-300"
                 />
               </div>
               <div className="mb-3">
@@ -98,16 +99,16 @@ const ReimbursementModal = ({ isOpen, setIsOpen, onSubmit }) => {
                   value={expenseAmount}
                   onChange={(e) => setExpenseAmount(e.target.value)}
                   placeholder="Enter amount in SAR"
-                  className="w-full bg-[#10141c] min-w-[450px] sm:min-w-[550px] p-2.5 rounded-md border border-gray-800 text-gray-300"
+                  className="w-full bg-[#10141c] text-sm min-w-[450px] sm:min-w-[550px] p-2.5 rounded-md border border-gray-800 text-gray-300"
                 />
               </div>
-              <div className="mb-3">
+              <div className="mb-1">
                 <label className="block text-gray-400 text-sm mb-1">Description</label>
                 <textarea
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                   placeholder="Enter a brief description of the expense..."
-                  className="w-full h-16 bg-[#10141c] min-w-[450px] sm:min-w-[550px] p-2.5 rounded-md border border-gray-800 text-gray-300"
+                  className="w-full h-16 bg-[#10141c] min-w-[450px] text-sm sm:min-w-[550px] p-2.5 rounded-md border border-gray-800 text-gray-300"
                 />
               </div>
               <div className="mb-3">
@@ -115,7 +116,7 @@ const ReimbursementModal = ({ isOpen, setIsOpen, onSubmit }) => {
                 <select
                   value={modeOfPayment}
                   onChange={(e) => setModeOfPayment(e.target.value)}
-                  className="w-full bg-[#10141c] p-2.5 rounded-md border border-gray-800 text-gray-300"
+                  className="w-full bg-[#10141c] p-2.5 rounded-md border text-sm border-gray-800 text-gray-300"
                 >
                   <option value="" disabled>Select Mode of Payment</option>
                   <option value="Credit Card">Credit Card</option>
@@ -130,11 +131,11 @@ const ReimbursementModal = ({ isOpen, setIsOpen, onSubmit }) => {
                 <input
                   type="file"
                   onChange={(e) => setBillFile(e.target.files[0])}
-                  className="w-full bg-[#10141c] p-2.5 rounded-md border border-gray-800 text-gray-300"
+                  className="w-full bg-[#10141c] text-sm p-2.5 rounded-md border border-gray-800 text-gray-300"
                 />
               </div>
             </div>
-            <div className="flex gap-3 p-6">
+            <div className="flex gap-3 p-3">
               <button
                 onClick={() => setIsOpen(false)}
                 className="flex-1 bg-gray-900 text-white py-1.5 rounded-md hover:bg-gray-800 transition"
@@ -145,7 +146,7 @@ const ReimbursementModal = ({ isOpen, setIsOpen, onSubmit }) => {
                 onClick={handleSubmit}
                 className="flex-1 bg-blue-600 text-white py-1.5 rounded-md hover:bg-blue-500 transition"
               >
-                Submit Reimbursement
+                Submit
               </button>
             </div>
           </motion.div>

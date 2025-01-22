@@ -47,6 +47,7 @@ const LeaveRequestModal = ({ isOpen, setIsOpen, onSubmit }) => {
           >
             <div className="bg-black p-2 flex justify-between w-full items-center px-4">
               <img src={logo} className="h-12" alt="logo" />
+              <h2 className="text-lg font-semibold text-gray-300">Submit Leave Request</h2>
               <div
                 onClick={() => setIsOpen(false)}
                 className="flex justify-center cursor-pointer items-center hover:bg-gray-800 w-12 h-12 rounded-full"
@@ -55,14 +56,14 @@ const LeaveRequestModal = ({ isOpen, setIsOpen, onSubmit }) => {
               </div>
             </div>
             <div className="p-4">
-              <h2 className="text-lg font-semibold text-gray-300 mb-3">Submit Leave Request</h2>
+             
               {error && <p className="text-red-500 text-sm mb-3">{error}</p>}
               <div className="mb-3">
                 <label className="block text-gray-400 text-sm mb-1">Leave Type</label>
                 <select
                   value={leaveType}
                   onChange={(e) => setLeaveType(e.target.value)}
-                  className="w-full bg-[#10141c] p-2.5 rounded-md border border-gray-800 text-gray-300"
+                  className="w-full bg-[#10141c] p-2.5 rounded-md text-sm border border-gray-800 text-gray-300"
                 >
                   <option value="" disabled>Select Leave Type</option>
                   <option value="Annual">Annual Leave</option>
@@ -75,13 +76,13 @@ const LeaveRequestModal = ({ isOpen, setIsOpen, onSubmit }) => {
                   <option value="Other">Other</option>
                 </select>
               </div>
-              <div className="mb-3">
+              <div className="mb-1">
                 <label className="block text-gray-400 text-sm mb-1">Reason for Leave</label>
                 <textarea
                   value={reason}
                   onChange={(e) => setReason(e.target.value)}
                   placeholder="Enter the reason for your leave..."
-                  className="w-full h-16 bg-[#10141c] p-2.5 rounded-md border border-gray-800 text-gray-300"
+                  className="w-full h-16 bg-[#10141c] p-2.5 text-sm rounded-md border border-gray-800 text-gray-300"
                 />
               </div>
               <div className="mb-3">
@@ -91,21 +92,21 @@ const LeaveRequestModal = ({ isOpen, setIsOpen, onSubmit }) => {
                   onChange={(date) => setStartDate(date)}
                   dateFormat="dd-MM-yyyy"
                   placeholderText="Select start date"
-                  className="w-full bg-[#10141c] p-3 min-w-[450px] sm:min-w-[550px] rounded-md border border-gray-800 text-gray-300"
+                  className="w-full bg-[#10141c] p-3 min-w-[450px] text-sm sm:min-w-[550px] rounded-md border border-gray-800 text-gray-300"
                 />
               </div>
-              <div className="mb-3">
+              <div className="">
                 <label className="block text-gray-400 text-sm mb-1">End Date</label>
                 <DatePicker
                   selected={endDate}
                   onChange={(date) => setEndDate(date)}
                   dateFormat="dd-MM-yyyy"
                   placeholderText="Select end date"
-                  className="w-full bg-[#10141c] p-3 min-w-[450px] sm:min-w-[550px] rounded-md border border-gray-800 text-gray-300"
+                  className="w-full bg-[#10141c] p-3 min-w-[450px] text-sm sm:min-w-[550px] rounded-md border border-gray-800 text-gray-300"
                 />
               </div>
             </div>
-            <div className="flex gap-3 p-6">
+            <div className="flex gap-3 p-4">
               <button
                 onClick={() => setIsOpen(false)}
                 className="flex-1 bg-gray-900 text-white py-1.5 rounded-md hover:bg-gray-800 transition"
@@ -116,7 +117,7 @@ const LeaveRequestModal = ({ isOpen, setIsOpen, onSubmit }) => {
                 onClick={handleSubmit}
                 className="flex-1 bg-blue-600 text-white py-1.5 rounded-md hover:bg-blue-500 transition"
               >
-                Submit Request
+                Submit
               </button>
             </div>
           </motion.div>

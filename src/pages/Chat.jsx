@@ -446,7 +446,7 @@ const Chat = () => {
       </div>
 
       {/* Input Bar */}
-      <div className="fixed bottom-0 left-0 right-0 border-t border-gray-800 p-4 bg-opacity-90 bg-black transition-all duration-300">
+      <div className="fixed bottom-0 left-0 right-0 p-4 bg-opacity-90 bg-black transition-all duration-300">
         <div className="flex items-center max-w-full sm:max-w-2xl mx-auto w-full">
           <button
             className="bg-[#202327] px-4 py-4 rounded-l-full hover:bg-gray-600 flex items-center justify-center relative"
