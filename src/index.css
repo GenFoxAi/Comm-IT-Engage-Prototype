@@ -44,3 +44,288 @@ body {
   filter: blur(5px);
 }
 
+.markdown-content {
+  /* Base styles */
+  line-height: 1.6;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  color: #e0e0e0;
+}
+
+/* Headings */
+.markdown-content h1,
+.markdown-content h2,
+.markdown-content h3,
+.markdown-content h4,
+.markdown-content h5,
+.markdown-content h6 {
+  margin-top: 1.5em;
+  margin-bottom: 0.5em;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.markdown-content h1 {
+  font-size: 2em;
+  border-bottom: 2px solid #444;
+  padding-bottom: 0.3em;
+}
+
+.markdown-content h2 {
+  font-size: 1.75em;
+  border-bottom: 1px solid #555;
+  padding-bottom: 0.3em;
+}
+
+.markdown-content h3 {
+  font-size: 1.2em;
+}
+
+.markdown-content h4 {
+  font-size: 1.25em;
+}
+
+.markdown-content h5 {
+  font-size: 1em;
+}
+
+.markdown-content h6 {
+  font-size: 0.875em;
+  color: #cccccc;
+}
+
+/* Paragraphs */
+.markdown-content p {
+  margin-bottom: 1em;
+  color: #e0e0e0;
+}
+
+/* Links */
+.markdown-content a {
+  color: #1e90ff;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.markdown-content a:hover {
+  color: #63b3ed;
+  text-decoration: underline;
+}
+
+/* Images */
+.markdown-content img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 5px;
+  margin: 1em 0;
+}
+
+/* Blockquotes */
+.markdown-content blockquote {
+  border-left: 4px solid #555;
+  padding-left: 1em;
+  color: #aaaaaa;
+  margin: 1.5em 0;
+  background-color: #1a1a1a;
+  border-radius: 3px;
+}
+
+/* Lists */
+.markdown-content ul,
+.markdown-content ol {
+  margin-bottom: 1em;
+  padding-left: 2em;
+  color: #e0e0e0;
+}
+
+.markdown-content li {
+  margin-bottom: 0.5em;
+}
+
+/* Task Lists */
+.markdown-content input[type="checkbox"] {
+  margin-right: 0.5em;
+}
+
+/* Tables */
+.markdown-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1em;
+}
+
+.markdown-content th,
+.markdown-content td {
+  border: 1px solid #444;
+  padding: 0.5em 1em;
+  text-align: left;
+}
+
+.markdown-content th {
+  background-color: #333;
+  color: #ffffff;
+}
+
+.markdown-content tr:nth-child(even) {
+  background-color: #2a2a2a;
+}
+
+/* Code Blocks */
+.markdown-content pre {
+  background-color: #2d2d2d;
+  padding: 1em;
+  border-radius: 5px;
+  overflow-x: auto;
+  margin-bottom: 1em;
+}
+
+.markdown-content code {
+  background-color: #2d2d2d;
+  padding: 0.2em 0.4em;
+  border-radius: 3px;
+  color: #ffcc00;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+/* Inline Code */
+.markdown-content p > code {
+  background-color: #2d2d2d;
+  padding: 0.2em 0.4em;
+  border-radius: 3px;
+  color: #ffcc00;
+}
+
+/* Horizontal Rules */
+.markdown-content hr {
+  border: none;
+  border-top: 1px solid #444;
+  margin: 2em 0;
+}
+
+/* Inline HTML Elements (if HTML is enabled) */
+.markdown-content strong {
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.markdown-content em {
+  font-style: italic;
+  color: #dddddd;
+}
+
+.markdown-content u {
+  text-decoration: underline;
+  color: #dddddd;
+}
+
+/* Links with Icons (optional) */
+.markdown-content a .icon-link {
+  margin-left: 0.3em;
+  vertical-align: middle;
+  fill: #1e90ff;
+}
+
+/* Lists with Custom Bullet Points */
+.markdown-content ul {
+  list-style-type: disc;
+}
+
+.markdown-content ul li::marker {
+  color: #1e90ff;
+}
+
+/* Nested Lists */
+.markdown-content ul ul,
+.markdown-content ol ol,
+.markdown-content ul ol,
+.markdown-content ol ul {
+  margin-left: 1em;
+}
+
+/* Footnotes */
+.markdown-content .footnote {
+  font-size: 0.875em;
+  color: #aaaaaa;
+}
+
+/* Responsive Images */
+.markdown-content img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Responsive Tables */
+.markdown-content table {
+  display: block;
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
+/* Additional Styling for Code Syntax Highlighting */
+.markdown-content .hljs {
+  background: none;
+  color: #e0e0e0;
+}
+
+.markdown-content .hljs-comment,
+.markdown-content .hljs-quote {
+  color: #6a9955;
+  font-style: italic;
+}
+
+.markdown-content .hljs-keyword,
+.markdown-content .hljs-selector-tag,
+.markdown-content .hljs-subst {
+  color: #c586c0;
+}
+
+.markdown-content .hljs-number,
+.markdown-content .hljs-literal,
+.markdown-content .hljs-variable,
+.markdown-content .hljs-template-variable,
+.markdown-content .hljs-tag .hljs-name,
+.markdown-content .hljs-selector-id,
+.markdown-content .hljs-selector-class {
+  color: #b5cea8;
+}
+
+.markdown-content .hljs-string,
+.markdown-content .hljs-doctag {
+  color: #ce9178;
+}
+
+.markdown-content .hljs-title,
+.markdown-content .hljs-section,
+.markdown-content .hljs-selector-attr,
+.markdown-content .hljs-selector-pseudo {
+  color: #569cd6;
+  font-weight: bold;
+}
+
+.markdown-content .hljs-type,
+.markdown-content .hljs-class .hljs-title {
+  color: #4ec9b0;
+  font-weight: bold;
+}
+
+.markdown-content .hljs-tag,
+.markdown-content .hljs-name,
+.markdown-content .hljs-attribute {
+  color: #d4d4d4;
+  font-weight: normal;
+}
+
+.markdown-content .hljs-regexp,
+.markdown-content .hljs-link {
+  color: #d16969;
+}
+
+.markdown-content .hljs-symbol,
+.markdown-content .hljs-bullet {
+  color: #d7ba7d;
+}
+
+.markdown-content .hljs-built_in,
+.markdown-content .hljs-builtin-name {
+  color: #569cd6;
+}
+

@@ -78,7 +78,7 @@ const LeaveRequestModal = ({ isOpen, setIsOpen, onSubmit }) => {
                   onChange={(e) => setLeaveType(e.target.value)}
                   className="w-full bg-[#10141c] p-2.5 rounded-md border border-gray-800 text-gray-300 focus:outline-none focus:ring focus:ring-indigo-200"
                 >
-                  <option value="" disabled>
+                  <option value="" disabled className="text-gray-400">
                     Select Leave Type
                   </option>
                   <option value="Annual">Annual Leave</option>
@@ -86,6 +86,9 @@ const LeaveRequestModal = ({ isOpen, setIsOpen, onSubmit }) => {
                   <option value="Maternity">Maternity Leave</option>
                   <option value="Paternity">Paternity Leave</option>
                   <option value="Unpaid">Unpaid Leave</option>
+                  <option value="Casual">Casual Leave</option>
+                  <option value="Earned">Earned Leave</option>
+                  <option value="Other">Other</option>
                 </select>
               </div>
 
@@ -111,7 +114,7 @@ const LeaveRequestModal = ({ isOpen, setIsOpen, onSubmit }) => {
                   type="date"
                   value={startDate}
                   onChange={(e) => setStartDate(e.target.value)}
-                  className="w-full bg-[#10141c] p-2.5 rounded-md border border-gray-800 text-gray-300 focus:outline-none focus:ring focus:ring-indigo-200"
+                  className="w-full bg-[#10141c] p-2.5 rounded-md border border-gray-800 text-gray-300 focus:outline-none focus:ring focus:ring-indigo-200 accent-blue-500"
                 />
               </div>
 
@@ -124,7 +127,7 @@ const LeaveRequestModal = ({ isOpen, setIsOpen, onSubmit }) => {
                   type="date"
                   value={endDate}
                   onChange={(e) => setEndDate(e.target.value)}
-                  className="w-full bg-[#10141c] p-2.5 rounded-md border border-gray-800 text-gray-300 focus:outline-none focus:ring focus:ring-indigo-200"
+                  className="w-full bg-[#10141c] p-2.5 rounded-md border border-gray-800 text-gray-300 focus:outline-none focus:ring focus:ring-indigo-200 accent-blue-500"
                 />
               </div>
             </div>

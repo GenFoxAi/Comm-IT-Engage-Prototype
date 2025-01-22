@@ -8,8 +8,6 @@ import { FaUserCheck } from "react-icons/fa6";
 import { GiReceiveMoney } from "react-icons/gi";
 import { tickets } from "../data/tickets";
 import Ticket from "../components/Ticket";
-import ExampleComponent from "../components/ExampleComponent";
-
 import { useLeaveRequests } from "../contexts/LeaveRequestContext";
 import { useReimbursements } from "../contexts/ReimbursementContext";
 
@@ -21,8 +19,10 @@ const Home = () => {
     if (!input.trim()) return;
     navigate("/chat", { state: { initialMessage: input.trim() } });
   };
+
   const { leaveRequests } = useLeaveRequests();
   const { reimbursements } = useReimbursements();
+
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
       e.preventDefault();
@@ -44,38 +44,43 @@ const Home = () => {
   const quickOptions = [
     {
       title: "View My Pay Details",
-      icon: (
-        <FaMoneyCheckAlt
-          className="absolute bottom-4 text-blue-500"
-          size={22}
-        />
-      ),
+      icon: <FaMoneyCheckAlt className="absolute bottom-4 text-blue-500" size={22} />,
       searchText: "View My Pay Details",
     },
     {
       title: "Apply for Leave",
-      icon: (
-        <MdOutlineEventNote
-          className="absolute bottom-4 text-blue-500"
-          size={22}
-        />
-      ),
+      icon: <MdOutlineEventNote className="absolute bottom-4 text-blue-500" size={22} />,
       searchText: "Apply for Leave",
     },
     {
       title: "Check My Attendance",
-      icon: (
-        <FaUserCheck className="absolute bottom-4 text-blue-500" size={22} />
-      ),
+      icon: <FaUserCheck className="absolute bottom-4 text-blue-500" size={22} />,
       searchText: "Check My Attendance",
     },
     {
       title: "Request Expense Reimbursement",
-      icon: (
-        <GiReceiveMoney className="absolute bottom-4 text-blue-500" size={22} />
-      ),
+      icon: <GiReceiveMoney className="absolute bottom-4 text-blue-500" size={22} />,
       searchText: "Request Expense Reimbursement",
     },
+  ];
+
+ 
+  const combinedTickets = [
+    ...leaveRequests.map((request, index) => ({
+      id: `leave-${index}`,
+      subject: `Leave: ${request.leaveType}`,
+      description: `Reason: ${request.reason}`,
+      ticketNumber: `Leave-${index + 1}`,
+      status: request.status,
+    })),
+    ...reimbursements.map((reimbursement, index) => ({
+      id: `reimbursement-${index}`,
+      subject: `Reimbursement: ${reimbursement.expenseType}`,
+      description: `Description: ${reimbursement.description}`,
+      ticketNumber: `Reimbursement-${index + 1}`,
+      status: reimbursement.status,
+    })),
+    ...tickets,
   ];
 
   return (
@@ -137,61 +142,18 @@ const Home = () => {
           ))}
         </div>
 
-        {leaveRequests.map((request, index) => (
-          <div
-            key={index}
-            className="bg-[#0d0e11] p-4 rounded-lg mb-4 shadow-md"
-          >
-            <h3 className="text-lg font-semibold text-blue-400">
-              {request.leaveType}
-            </h3>
-            <p className="text-sm text-gray-300">Reason: {request.reason}</p>
-            <p className="text-sm text-gray-300">
-              Dates: {request.startDate} to {request.endDate}
-            </p>
-            <p className="text-sm text-yellow-400">Status: {request.status}</p>
-          </div>
-        ))}
-        {reimbursements.map((reimbursement, index) => (
-          <div
-            key={index}
-            className="bg-[#0d0e11] p-4 rounded-lg mb-4 shadow-md"
-          >
-            <h3 className="text-lg font-semibold text-blue-400">
-              {reimbursement.expenseType}
-            </h3>
-            <p className="text-sm text-gray-300">
-              Amount: {reimbursement.expenseAmount}SAR
-            </p>
-            <p className="text-sm text-gray-300">
-              Date: {reimbursement.expenseDate}
-            </p>
-            <p className="text-sm text-gray-300">
-              Description: {reimbursement.description}
-            </p>
-            <p className="text-sm text-gray-300">
-              Mode of Payment: {reimbursement.modeOfPayment}
-            </p>
-            <p className="text-sm text-yellow-400">
-              Status: {reimbursement.status}
-            </p>
-          </div>
-        ))}
-
+        {/* Tickets Section */}
         <div className="w-full max-w-[718px] grid grid-cols-1 sm:grid-cols-2 gap-4 mt-8">
-          {tickets.map((ticket) => (
-            <Ticket
-              key={ticket.id}
-              ticket={ticket}
-              onClick={handleTicketClick}
-            />
+          {combinedTickets.map((ticket) => (
+            <Ticket key={ticket.id} ticket={ticket} onClick={handleTicketClick} />
           ))}
         </div>
-
-        {/* <ExampleComponent /> */}
       </div>
     </div>
   );
 };
 
 export default Home;
+
+
+
