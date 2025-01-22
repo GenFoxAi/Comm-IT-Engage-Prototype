@@ -52,7 +52,7 @@ const ReimbursementModal = ({ isOpen, setIsOpen, onSubmit }) => {
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.9, opacity: 0 }}
             onClick={(e) => e.stopPropagation()}
-            className="bg-[#0d0e11] rounded-lg w-full max-w-xl shadow-2xl cursor-default relative overflow-hidden"
+            className="bg-[#0d0e11] rounded-lg w-full max-w-xl  shadow-2xl cursor-default relative overflow-hidden"
           >
             <div className="bg-black p-2 flex justify-between w-full items-center px-4">
               <img src={logo} className="h-12" alt="logo" />
@@ -68,7 +68,7 @@ const ReimbursementModal = ({ isOpen, setIsOpen, onSubmit }) => {
               
               {error && <p className="text-red-500 text-sm mb-3">{error}</p>}
               <div className="mb-3">
-                <label className="block text-gray-400 text-sm mb-1">Expense Type</label>
+                <label className="block text-gray-400 text-xs md:text-sm mb-1">Expense Type</label>
                 <select
                   value={expenseType}
                   onChange={(e) => setExpenseType(e.target.value)}
