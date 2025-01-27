@@ -211,9 +211,12 @@ const Chat = () => {
     try {
       const conversationUpToUser = messages.slice(0, userMsgIndex + 1);
 
-      const response = await axios.post("http://localhost:8000/chat/", {
-        messages: transformToBackendMessageFormat(conversationUpToUser),
-      });
+      const response = await axios.post(
+        "https://payroll-backend-5hiq.onrender.com/chat/",
+        {
+          messages: transformToBackendMessageFormat(conversationUpToUser),
+        }
+      );
 
       const botReply =
         response.data.messages.slice(-1)[0]?.content || "Error in response";
